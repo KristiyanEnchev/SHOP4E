@@ -10,10 +10,11 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - PORT=${PORT}
-      - MONGO_URI=${MONGO_URI}
+      - HOST=${HOST}
       - MONGO_DB_NAME=${MONGO_DB_NAME}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - DOCKER=true
     depends_on:
       mongodb:
         condition: service_healthy
@@ -22,6 +23,8 @@ services:
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
+      - uploads_data:/usr/src/app/public/uploads
+    user: 'root'
 
   mongodb:
     image: mongo:latest
@@ -33,7 +36,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -56,3 +59,8 @@ networks:
 
 volumes:
   mongodb_data:
+  uploads_data:
+    driver_opts:
+      type: none
+      device: ${PWD}/server/public/uploads
+      o: bind
