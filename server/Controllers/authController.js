@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 
 import { blacklist, generateToken } from '../Middleware/Auth.js';
-import User from '../models/userModel.js';
+import User from '../Models/userModel.js';
 
 //REGISTER
 export const register = expressAsyncHandler(async (req, res) => {
