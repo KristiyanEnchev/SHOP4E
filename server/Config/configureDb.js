@@ -1,21 +1,34 @@
 import mongoose from 'mongoose';
 
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-
-export const connectDb = (dbConnection) => {
+export const connectDb = async (dbUri) => {
   try {
-    mongoose.connect(dbConnection, options);
-    mongoose.connection.on('connected', (err, res) => {
-      console.log('mongoose is connected');
+    mongoose.set('strictQuery', false);
+
+    const options = {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 30000,
+      heartbeatFrequencyMS: 2000,
+    };
+
+    await mongoose.connect(dbUri, options);
+    console.log('MongoDB connected successfully');
+
+    mongoose.connection.on('error', (err) => {
+      console.error('MongoDB connection error:', err);
     });
-    console.log('*** >>> Database is connected <<< ***');
+
+    mongoose.connection.on('disconnected', () => {
+      console.warn('MongoDB disconnected. Attempting to reconnect...');
+    });
+
+    mongoose.connection.on('reconnected', () => {
+      console.log('MongoDB reconnected');
+    });
   } catch (error) {
-    console.error(
-      '!!! >>> Database is not connected <<< !!!\nError:',
-      error.message
-    );
+    console.error('MongoDB connection failed:', error);
+    process.exit(1);
   }
 };
