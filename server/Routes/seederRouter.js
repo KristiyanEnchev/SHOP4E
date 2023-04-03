@@ -1,6 +1,5 @@
 import express from 'express';
 import * as controller from '../Controllers/seederController.js';
-
 const seedRouter = express.Router();
 
 /**
@@ -19,9 +18,18 @@ const seedRouter = express.Router();
  *       Seeds the database with sample products and users.
  *       This endpoint is only available in development mode.
  *       WARNING - This will clear existing data before seeding.
+ *       Use query parameter 'clean=true' to clean and re-download all images before seeding.
  *     tags: [Seeder]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: clean
+ *         schema:
+ *           type: boolean
+ *         description: If true, cleans existing images before seeding. If false or omitted, reuses existing images.
+ *         example: true
+ *         required: false
  *     responses:
  *       200:
  *         description: Database seeded successfully
@@ -53,7 +61,6 @@ const seedRouter = express.Router();
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */
-
-seedRouter.get('/', controller.seeder);
+seedRouter.get('/', controller.seedDatabase);
 
 export default seedRouter;
