@@ -1,17 +1,22 @@
 import 'dotenv/config';
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+
 import { connectDb } from './Config/configureDb.js';
 import { config } from './Config/variables.js';
 import { expressConfig } from './Config/express.js';
 import { filter } from './Config/filter.js';
 import { router } from './Routes/router.js';
 import { specs } from './Utils/swagger.js';
-import swaggerUi from 'swagger-ui-express';
+import { initializeSeeder } from './Config/seederInitializer.js';
 
 const app = express();
 
 const start = async () => {
   connectDb(config.dbConnection);
+
+  initializeSeeder();
+
   expressConfig(app, express);
 
   if (process.env.NODE_ENV !== 'production') {
