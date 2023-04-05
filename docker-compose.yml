@@ -23,7 +23,7 @@ services:
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
-      - uploads_data:/usr/src/app/public/uploads
+      - server_uploads:/usr/src/app/public/uploads
     user: 'root'
 
   mongodb:
@@ -59,8 +59,4 @@ networks:
 
 volumes:
   mongodb_data:
-  uploads_data:
-    driver_opts:
-      type: none
-      device: ${PWD}/server/public/uploads
-      o: bind
+  server_uploads:
