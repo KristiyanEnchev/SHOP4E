@@ -4,6 +4,9 @@ import seedRouter from './seederRouter.js';
 import userUploadRouter from './uploadRoutes.js';
 import userRouter from './userRoutes.js';
 
+import stripeRoutes from './stripeRoutes.js';
+import orderRouter from './orderRoutes.js';
+
 export const router = (app) => {
   /**
    * @swagger
@@ -53,4 +56,7 @@ export const router = (app) => {
   app.use('/api/seed', seedRouter);
   app.use('/api/upload', userUploadRouter);
   app.use('/api/products', productRouter);
+
+  app.use('/api/orders', orderRouter);
+  app.use('/api/create-checkout-session', stripeRoutes);
 };

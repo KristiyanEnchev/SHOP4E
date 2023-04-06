@@ -32,11 +32,11 @@ const productSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      required: true,
+      required: false,
       min: [0, 'Rating must be a positive number'],
       mix: [5, 'Rating must be no more than 5'],
     },
-    numReviews: { type: Number, required: true },
+    numReviews: { type: Number, required: false },
     reviews: [reviewSchema],
   },
   {
