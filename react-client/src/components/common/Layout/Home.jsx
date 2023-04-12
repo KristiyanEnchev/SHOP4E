@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import FooterBanner from './FooterBanner.js';
-import HeroBanner from './HeroBanner.js';
+import FooterBanner from './FooterBanner.jsx';
+import HeroBanner from './HeroBanner.jsx';
 import { useEffect } from 'react';
-import { ProductCard } from '../../Product/ProductCard.js';
+import ProductCard from '../../Product/ProductCard.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getProducts,
@@ -26,19 +26,26 @@ const Home = () => {
       <Helmet>
         <title>Home</title>
       </Helmet>
-      <div className="layout">
-        <main className="main-container">
+      <div className="max-w-[1400px] mx-auto px-4">
+        <main className="py-8">
           <HeroBanner />
-          <div className="products-heading">
-            <h2>Best Seller Products</h2>
-            <p>Sneakers There are many variations passages</p>
+
+          <div className="text-center my-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Best Seller Products
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Sneakers There are many variations passages
+            </p>
           </div>
-          <div className="products-container">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {products &&
               products?.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
+
           <FooterBanner />
         </main>
       </div>
