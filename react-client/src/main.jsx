@@ -1,18 +1,18 @@
-import React from 'react';
-import RequireAuthorization from './components/AuthComponent/RequireAuthorization.js';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import { StrictMode } from 'react';
+import { Provider } from 'react-redux';
+import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './redux/store.js';
-import './App.css';
-import { AdminPanel } from './Admin/AdminPanel.js';
-import { ContextProvider } from './Admin/contexts/ContextProvider.js';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
+import App from './App.jsx';
+import store from './redux/store.js';
+import AdminPanel from './Admin/AdminPanel.jsx';
+import ContextProvider from './Admin/contexts/ContextProvider.jsx';
+import RequireAuthorization from './components/AuthComponent/RequireAuthorization.jsx';
+import './App.css';
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <HelmetProvider>
       <Provider store={store}>
         <ContextProvider>
@@ -27,5 +27,5 @@ root.render(
         </ContextProvider>
       </Provider>
     </HelmetProvider>
-  </React.StrictMode>
+  </StrictMode>
 );
