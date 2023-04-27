@@ -1,15 +1,25 @@
-const host = 'http://localhost:5000/api';
+const host = `${import.meta.env.VITE_HOST_URL}/api`;
 
 export async function uploadPic(item) {
-  const data = await fetch(host + '/upload/profile', {
-    method: 'post',
-    body: item,
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      sessionStorage.setItem('avatar', data.secure_url);
-      return data;
+  try {
+    const response = await fetch(host + '/upload/profile', {
+      method: 'post',
+      body: item,
     });
+      const data = await response.json();
 
-  return data;
+    if (!data.url) {
+      throw new Error('No URL received from upload');
+      }
+
+    const fullAvatarUrl = `${import.meta.env.VITE_HOST_URL}/${data.url}`;
+
+      return {
+      ...data,
+      fullUrl: fullAvatarUrl,
+    };
+  } catch (error) {
+    console.error('Upload error:', error);
+    throw error;
+  }
 }

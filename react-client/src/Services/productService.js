@@ -19,7 +19,7 @@ export async function getProductById(productId) {
 }
 
 export async function create(item) {
-  return await api.post(host + '/products/create', item);
+  return await api.post(host + '/products', item);
 }
 
 export async function edit(id, item) {

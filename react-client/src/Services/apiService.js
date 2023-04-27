@@ -18,12 +18,8 @@ export async function request(url, options) {
       throw new Error(error.message);
     }
 
-    try {
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      return response;
-    }
+    const data = await response.json();
+    return data;
   } catch (err) {
     alert(err.message);
     throw err;

@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 
+// eslint-disable-next-line no-undef
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
