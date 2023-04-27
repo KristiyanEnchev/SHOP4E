@@ -1,24 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as productService from '../../Services/productService.js';
 
-// const initialState = {
-//   loading: false,
-//   error: null,
-//   _id: '',
-//   name: '',
-//   slug: '',
-//   image: '',
-//   images: '',
-//   category: '',
-//   description: '',
-//   price: '',
-//   countInStock: 0,
-//   rating: '',
-//   numReviews: '',
-//   reviews: '',
-//   createdAt: '',
-//   updatedAt: '',
-// };
 const initialState = {
   loading: false,
   error: null,
@@ -88,20 +70,6 @@ const productSlice = createSlice({
     [getProductById.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.product = payload;
-      // state.name = payload.name;
-      // state.slug = payload.slug;
-      // state.image = payload.image;
-      // state.images = payload.images;
-      // state.category = payload.category;
-      // state.description = payload.description;
-      // state.price = payload.price;
-      // state.countInStock = payload.countInStock;
-      // state.rating = payload.rating;
-      // state.numReviews = payload.numReviews;
-      // state.reviews = payload.reviews;
-      // state._id = payload._id;
-      // state.createdAt = payload.createdAt;
-      // state.updatedAt = payload.updatedAt;
     },
     [getProductById.rejected]: (state, { payload }) => {
       state.loading = false;
