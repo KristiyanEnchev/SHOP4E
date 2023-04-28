@@ -1,32 +1,54 @@
-import React, { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const StateContext = createContext();
 
 const initialState = {
+  chat: false,
+  cart: false,
   userProfile: false,
-  user: {},
+  notification: false,
 };
 
 export const ContextProvider = ({ children }) => {
-  const [screenSize, setScreenSize] = useState(undefined);
-  const [currentColor, setCurrentColor] = useState('#03C9D7');
-  const [currentMode, setCurrentMode] = useState('Light');
+  const [currentMode, setCurrentMode] = useState(
+    localStorage.getItem('themeMode') || 'Light'
+  );
+  const [currentColor, setCurrentColor] = useState(
+    localStorage.getItem('colorMode') || '#1A97F5'
+  );
   const [themeSettings, setThemeSettings] = useState(false);
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
+  const [screenSize, setScreenSize] = useState(undefined);
 
-  const setMode = (e) => {
-    setCurrentMode(e.target.value);
-    localStorage.setItem('themeMode', e.target.value);
+  const setMode = (mode) => {
+    setCurrentMode(mode);
+    localStorage.setItem('themeMode', mode);
+
+    if (mode === 'Dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
+  useEffect(() => {
+    const savedMode = localStorage.getItem('themeMode') || 'Light';
+    setMode(savedMode);
+  }, []);
+
   const setColor = (color) => {
+    if (!color) return;
     setCurrentColor(color);
     localStorage.setItem('colorMode', color);
   };
 
   const handleClick = (clicked) =>
     setIsClicked({ ...initialState, [clicked]: true });
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', currentMode === 'Dark');
+  }, [currentMode]);
 
   return (
     <StateContext.Provider
@@ -54,4 +76,7 @@ export const ContextProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useStateContext = () => useContext(StateContext);
+
+export default ContextProvider;
