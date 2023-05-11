@@ -1,22 +1,19 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { FiSettings } from 'react-icons/fi';
-import Navbar from './components/Navbar.js';
-import Sidebar from './components/Sidebar.js';
-import Footer from '../components/common/Footer/Footer.js';
-import ThemeSettings from './components/ThemeSettings.js';
-import Users from './components/Users/Users.js';
-import Products from './components/Products/Products.js';
-import './Admin.css';
-import './index.css';
-
-import { useStateContext } from './contexts/ContextProvider.js';
-import { Tooltip } from '@mui/material';
 import { Toaster } from 'react-hot-toast';
-import { Home } from './components/Home/Home.js';
-import { PageNotFound } from '../components/common/404/PageNotFound.js';
+import { useStateContext } from './contexts/ContextProvider';
+import { CustomTooltip } from '../components/ui/custom-tooltip.jsx';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Footer from './components/Footer.jsx';
+import ThemeSettings from './components/ThemeSettings';
+import Users from './components/Users/Users';
+import Products from './components/Products/Products';
+import { Home } from './components/Home/Home';
+import PageNotFound from '../components/common/404/PageNotFound';
 
-export const AdminPanel = () => {
+const AdminPanel = () => {
   const {
     setCurrentColor,
     setCurrentMode,
@@ -39,43 +36,32 @@ export const AdminPanel = () => {
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
-
       <div className={currentMode === 'Dark' ? 'dark' : ''}>
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" style={{ zIndex: '1000' }}>
-            <Tooltip title="Settings">
+            <CustomTooltip content="Settings">
               <button
                 type="button"
                 onClick={() => setThemeSettings(true)}
                 style={{ background: currentColor, borderRadius: '50%' }}
-                className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray btn-style-t"
+                className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
               >
                 <FiSettings />
               </button>
-            </Tooltip>
+            </CustomTooltip>
           </div>
-          {activeMenu ? (
-            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-              <Sidebar />
-            </div>
-          ) : (
-            <div className="w-0 dark:bg-secondary-dark-bg">
-              <Sidebar />
-            </div>
-          )}
+
+          <Sidebar />
+
           <div
-            className={
-              activeMenu
-                ? 'dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full '
-                : 'bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 '
-            }
+            className={`dark:bg-main-dark-bg bg-main-bg min-h-screen ${
+              activeMenu ? 'md:ml-72' : ''
+            } w-full`}
           >
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-              <Navbar />
-            </div>
+            <Navbar />
+
             <div>
               {themeSettings && <ThemeSettings />}
-
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/users" element={<Users />} />
@@ -83,6 +69,7 @@ export const AdminPanel = () => {
                 <Route path="/*" element={<PageNotFound />} />
               </Routes>
             </div>
+
             <Footer />
           </div>
         </div>
@@ -90,3 +77,4 @@ export const AdminPanel = () => {
     </>
   );
 };
+export default AdminPanel;
