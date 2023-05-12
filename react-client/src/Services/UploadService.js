@@ -6,15 +6,15 @@ export async function uploadPic(item) {
       method: 'post',
       body: item,
     });
-      const data = await response.json();
+    const data = await response.json();
 
     if (!data.url) {
       throw new Error('No URL received from upload');
-      }
+    }
 
     const fullAvatarUrl = `${import.meta.env.VITE_HOST_URL}/${data.url}`;
 
-      return {
+    return {
       ...data,
       fullUrl: fullAvatarUrl,
     };
