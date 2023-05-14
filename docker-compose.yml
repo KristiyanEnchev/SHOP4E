@@ -48,6 +48,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - '3000:80'
+    environment:
+      - VITE_HOST_URL=${VITE_HOST_URL}
     depends_on:
       - server
     networks:

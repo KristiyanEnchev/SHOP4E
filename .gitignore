@@ -7,7 +7,7 @@
 *.userosscache
 *.sln.docstates
 *.env
-
+*dist
 
 /.vscode
 env
