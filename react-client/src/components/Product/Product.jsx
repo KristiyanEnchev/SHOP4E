@@ -33,14 +33,29 @@ const Product = () => {
     fetchData();
   }, [dispatch, slug]);
 
+  // const handleBuyNow = async () => {
+  //   const result = await dispatch(checkStripeAvailability()).unwrap();
+  //   if (!result.stripeEnabled) {
+  //     toast.error('Payment service is currently unavailable');
+  //     return;
+  //   }
+  //   dispatch(addToCart({ product, amount }));
+  //   navigate('/shipping');
+  // };
+
   const handleBuyNow = async () => {
-    const result = await dispatch(checkStripeAvailability()).unwrap();
-    if (!result.stripeEnabled) {
-      toast.error('Payment service is currently unavailable');
-      return;
+    try {
+      const result = dispatch(checkStripeAvailability());
+      if (result.payload?.stripeEnabled === false) {
+        toast.error('Payment service is currently unavailable');
+        return;
+      }
+      dispatch(addToCart({ product, amount }));
+      navigate('/shipping');
+    } catch (error) {
+      console.error('Error checking Stripe status:', error);
+      toast.error('Failed to verify payment service');
     }
-    dispatch(addToCart({ product, amount }));
-    navigate('/shipping');
   };
 
   const addToCartHandler = () => {

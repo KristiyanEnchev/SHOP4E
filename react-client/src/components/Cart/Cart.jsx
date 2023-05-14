@@ -46,14 +46,29 @@ const Cart = () => {
     dispatch(closeModal());
   };
 
+  // const handleProceedToCheckout = async () => {
+  //   const result = await dispatch(checkStripeAvailability()).unwrap();
+  //   if (!result.stripeEnabled) {
+  //     toast.error('Payment service is currently unavailable');
+  //     return;
+  //   }
+  //   navigate('/shipping');
+  //   dispatch(closeModal());
+  // };
+
   const handleProceedToCheckout = async () => {
-    const result = await dispatch(checkStripeAvailability()).unwrap();
-    if (!result.stripeEnabled) {
-      toast.error('Payment service is currently unavailable');
-      return;
+    try {
+      const result = dispatch(checkStripeAvailability());
+      if (result.payload?.stripeEnabled === false) {
+        toast.error('Payment service is currently unavailable');
+        return;
+      }
+      navigate('/shipping');
+      dispatch(closeModal());
+    } catch (error) {
+      console.error('Error checking Stripe status:', error);
+      toast.error('Failed to verify payment service');
     }
-    navigate('/shipping');
-    dispatch(closeModal());
   };
 
   return (

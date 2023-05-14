@@ -44,9 +44,9 @@ export const cartSlice = createSlice({
       localStorage.removeItem('cartItems');
       localStorage.removeItem('total');
       localStorage.removeItem('amount');
-      state.cartItems = initialState.cartItems;
-      state.amount = initialState.amount;
-      state.total = initialState.total;
+      state.cartItems = [];
+      state.amount = 0;
+      state.total = 0;
     },
     removeItem: (state, action) => {
       const itemId = action.payload;

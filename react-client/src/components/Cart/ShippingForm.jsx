@@ -169,7 +169,7 @@ const ShippingForm = () => {
       total,
     };
 
-    const resultAction = await dispatch(createOrder(orderData));
+    const resultAction = dispatch(createOrder(orderData));
     if (createOrder.fulfilled.match(resultAction)) {
       dispatch(clearCart());
     }

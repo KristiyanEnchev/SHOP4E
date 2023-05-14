@@ -1,17 +1,17 @@
 import * as api from './apiService.js';
 
-const API_URL = import.meta.env.VITE_HOST_URL;
+const host = (api.settings.host = 'http://localhost:5000/api');
 
 export const create = async (orderData) => {
-  return await api.post(`${API_URL}/api/orders`, orderData);
+  return await api.post(`${host}/orders`, orderData);
 };
 
 export const getOrders = async () => {
-  return await api.get(`${API_URL}/api/orders`);
+  return await api.get(`${host}/orders`);
 };
 
 export const checkStripeStatus = async () => {
-  const response = await fetch(`${API_URL}/api/orders/stripe-status`);
+  const response = await fetch(`${host}/orders/stripe-status`);
   if (!response.ok) {
     throw new Error('Failed to check payment service');
   }

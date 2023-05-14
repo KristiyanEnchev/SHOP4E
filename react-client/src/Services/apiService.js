@@ -1,5 +1,5 @@
 export const settings = {
-  host: '',
+  host: `${import.meta.env.VITE_HOST_URL}/api`,
 };
 
 export async function request(url, options) {
