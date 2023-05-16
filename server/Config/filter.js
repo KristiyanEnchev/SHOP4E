@@ -1,12 +1,14 @@
+// filter.js
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { errorHandler } from '../Utils/errorHandler.js';
+import { AppError } from '../Utils/AppError.js';
+import logger from './logger.js';
 import { paths } from './variables.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const allowed = [
+const ALLOWED_EXTENSIONS = new Set([
   '.js',
   '.css',
   '.png',
@@ -16,27 +18,54 @@ const allowed = [
   '.webp',
   '.gif',
   '.svg',
-];
+]);
+
+const validateFilePath = (filePath, baseDir) => {
+  const normalizedPath = path.normalize(filePath).toLowerCase();
+  const resolvedPath = path.resolve(baseDir, normalizedPath);
+  if (!resolvedPath.startsWith(path.resolve(baseDir))) {
+    throw new AppError('Invalid file path', 403);
+  }
+  return resolvedPath;
+};
+
+const hasAllowedExtension = (url) => {
+  const ext = path.extname(url).toLowerCase();
+  return ALLOWED_EXTENSIONS.has(ext);
+};
 
 export const filter = (app) => {
-  app.get('*', (req, res) => {
+  app.use((req, res, next) => {
+    const start = Date.now();
+
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      logger.info(
+        `${req.method} ${req.path} ${res.statusCode} - ${duration}ms`
+      );
+    });
+
     try {
       if (req.url.startsWith('/uploads/')) {
-        const filePath = path.join(
-          paths.uploadsDir,
-          req.url.replace('/uploads/', '')
+        const filePath = validateFilePath(
+          req.url.replace('/uploads/', ''),
+          paths.uploadsDir
         );
-        res.sendFile(filePath);
-        return;
+        return res.sendFile(filePath);
       }
 
-      if (allowed.some((ext) => req.url.toLowerCase().endsWith(ext))) {
-        res.sendFile(path.join(paths.publicDir, req.url));
-      } else {
-        res.sendFile(path.join(paths.publicDir, 'index.html'));
+      if (hasAllowedExtension(req.url)) {
+        const filePath = validateFilePath(req.url, paths.publicDir);
+        return res.sendFile(filePath);
       }
+
+      return res.sendFile(path.join(paths.publicDir, 'index.html'));
     } catch (error) {
-      errorHandler(error, res, req);
+      logger.error('Filter error:', error);
+      if (error instanceof AppError) {
+        return next(error);
+      }
+      return next(new AppError('Internal server error', 500));
     }
   });
 };
