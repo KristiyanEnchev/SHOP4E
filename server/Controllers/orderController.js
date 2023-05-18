@@ -79,5 +79,9 @@ export const GetOrders = expressAsyncHandler(async (req, res) => {
 });
 
 export const CheckStripeStatus = expressAsyncHandler(async (req, res) => {
-  res.json({ stripeEnabled: !!stripe });
+  try {
+    res.status(200).json({ stripeEnabled: !!stripe });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
