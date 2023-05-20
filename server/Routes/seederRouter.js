@@ -1,5 +1,6 @@
 import express from 'express';
 import * as controller from '../Controllers/seederController.js';
+import { noCache } from '../Middleware/cacheMiddleware.js';
 const seedRouter = express.Router();
 
 /**
@@ -61,6 +62,6 @@ const seedRouter = express.Router();
  *       500:
  *         $ref: '#/components/responses/ServerError'
  */
-seedRouter.get('/', controller.seedDatabase);
+seedRouter.get('/', noCache, controller.seedDatabase);
 
 export default seedRouter;

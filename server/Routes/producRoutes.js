@@ -1,8 +1,14 @@
 import express from 'express';
-import { isAdmin, isAuth } from '../Middleware/Auth.js';
+import { isAdmin, isAuth } from '../Middleware/authMiddleware.js';
 import * as controller from '../Controllers/productController.js';
 
 const productRouter = express.Router();
+
+const clearProductCache = (req, res, next) => {
+  clearCache('__express__/api/product');
+  clearCache('__express__/api/products');
+  next();
+};
 
 /**
  * @swagger
@@ -230,7 +236,13 @@ productRouter.get('/get/:productId', isAuth, controller.getProductById);
  *       403:
  *         description: Not authorized
  */
-productRouter.post('/', isAuth, isAdmin, controller.createProduct);
+productRouter.post(
+  '/',
+  isAuth,
+  isAdmin,
+  clearProductCache,
+  controller.createProduct
+);
 
 /**
  * @swagger
@@ -264,7 +276,13 @@ productRouter.post('/', isAuth, isAdmin, controller.createProduct);
  *       404:
  *         description: Product not found
  */
-productRouter.put('/:productId', isAuth, isAdmin, controller.editProduct);
+productRouter.put(
+  '/:productId',
+  isAuth,
+  isAdmin,
+  clearProductCache,
+  controller.editProduct
+);
 
 /**
  * @swagger
@@ -290,6 +308,12 @@ productRouter.put('/:productId', isAuth, isAdmin, controller.editProduct);
  *       404:
  *         description: Product not found
  */
-productRouter.delete('/:productId', isAuth, isAdmin, controller.deleteProduct);
+productRouter.delete(
+  '/:productId',
+  isAuth,
+  isAdmin,
+  clearProductCache,
+  controller.deleteProduct
+);
 
 export default productRouter;

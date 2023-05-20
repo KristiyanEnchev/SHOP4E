@@ -6,6 +6,7 @@ import userRouter from './userRoutes.js';
 
 import stripeRoutes from './stripeRoutes.js';
 import orderRouter from './orderRoutes.js';
+import { uploadLimiter } from '../Config/rateLimiter.js';
 
 export const router = (app) => {
   /**
@@ -54,7 +55,7 @@ export const router = (app) => {
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
   app.use('/api/seed', seedRouter);
-  app.use('/api/upload', userUploadRouter);
+  app.use('/api/upload', uploadLimiter, userUploadRouter);
   app.use('/api/products', productRouter);
 
   app.use('/api/orders', orderRouter);

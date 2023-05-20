@@ -1,5 +1,7 @@
 import express from 'express';
 import * as controller from '../Controllers/authController.js';
+import { noCache } from '../Middleware/cacheMiddleware.js';
+import { authLimiter, registerLimiter } from '../Config/rateLimiter.js';
 
 const authRouter = express.Router();
 
@@ -66,7 +68,7 @@ const authRouter = express.Router();
  *       429:
  *         description: Too many registration attempts
  */
-authRouter.post('/register', controller.register);
+authRouter.post('/register', registerLimiter, controller.register);
 
 /**
  * @swagger
@@ -117,7 +119,7 @@ authRouter.post('/register', controller.register);
  *       429:
  *         description: Too many login attempts
  */
-authRouter.post('/login', controller.login);
+authRouter.post('/login', authLimiter, controller.login);
 
 /**
  * @swagger
@@ -133,6 +135,6 @@ authRouter.post('/login', controller.login);
  *       401:
  *         description: Not authenticated
  */
-authRouter.get('/logout', controller.logout);
+authRouter.get('/logout', noCache, controller.logout);
 
 export default authRouter;
