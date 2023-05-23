@@ -70,7 +70,6 @@ const productsSlice = createSlice({
     },
     [updateProduct.fulfilled]: (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       const index = state.products.findIndex(
         (product) => product._id === action.payload._id
       );

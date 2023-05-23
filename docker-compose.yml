@@ -46,10 +46,10 @@ services:
     build:
       context: ./react-client
       dockerfile: Dockerfile
-    ports:
-      - '3000:80'
     environment:
       - VITE_HOST_URL=${VITE_HOST_URL}
+    ports:
+      - '3000:80'
     depends_on:
       - server
     networks:

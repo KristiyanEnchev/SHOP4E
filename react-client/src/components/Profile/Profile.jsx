@@ -68,14 +68,12 @@ export default function Profile() {
 
         try {
           const result = await dispatch(avatarUpload(formData)).unwrap();
-          console.log('Avatar upload result:', result);
 
           if (!result || !result.url) {
             throw new Error('Failed to upload avatar - no path received');
           }
 
           newAvatarPath = result.fullUrl;
-          console.log('New avatar path:', newAvatarPath);
           hasUpdates = true;
         } catch (uploadError) {
           console.error('Avatar upload error:', uploadError);
@@ -98,10 +96,7 @@ export default function Profile() {
       };
 
       if (values.name !== name || values.email !== email || newAvatarPath) {
-        console.log('Updating profile with:', updateData);
-
         const updateResult = await dispatch(updateUser(updateData)).unwrap();
-        console.log('Profile update result:', updateResult);
 
         if (updateResult) {
           const updatedAuth = {
@@ -114,12 +109,8 @@ export default function Profile() {
             isAdmin: auth.isAdmin,
           };
 
-          console.log('Setting final auth state:', updatedAuth);
-
-          // Update Redux state
           dispatch(setCredentials(updatedAuth));
 
-          // Update all session storage items
           sessionStorage.setItem('userInfo', JSON.stringify(updatedAuth));
           sessionStorage.setItem('avatar', updatedAuth.avatar);
           sessionStorage.setItem('name', updatedAuth.name);
@@ -129,7 +120,6 @@ export default function Profile() {
         }
       }
 
-      // Handle password update with the most recent avatar
       if (values.currentPassword && values.newPassword) {
         if (values.newPassword !== values.confirmPassword) {
           toast.error('New passwords do not match');
@@ -181,7 +171,6 @@ export default function Profile() {
 
       toast.success('Profile updated successfully');
 
-      // Reset form and preview
       form.reset({
         ...values,
         currentPassword: '',

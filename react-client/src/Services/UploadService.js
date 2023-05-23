@@ -1,8 +1,8 @@
-const host = `${import.meta.env.VITE_HOST_URL}/api`;
+const host = `${import.meta.env.VITE_HOST_URL}` || 'http://localhost:5000';
 
 export async function uploadPic(item) {
   try {
-    const response = await fetch(host + '/upload/profile', {
+    const response = await fetch(host + '/api' + '/upload/profile', {
       method: 'post',
       body: item,
     });
@@ -12,7 +12,7 @@ export async function uploadPic(item) {
       throw new Error('No URL received from upload');
     }
 
-    const fullAvatarUrl = `${import.meta.env.VITE_HOST_URL}/${data.url}`;
+    const fullAvatarUrl = `${host}${data.url}`;
 
     return {
       ...data,

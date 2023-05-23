@@ -13,7 +13,6 @@ const Orders = () => {
   }, [dispatch]);
   if (loading) return <Loader />;
 
-  console.log(orders);
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h2 className="text-2xl font-bold mb-6">Your Orders</h2>

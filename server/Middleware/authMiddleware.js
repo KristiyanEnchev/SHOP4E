@@ -42,7 +42,8 @@ const verifyToken = (req, res, next) => {
 
 export const isAuth = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user._id === req.params.userId || req.user.isAdmin) {
+    if (req.user._id || req.user.isAdmin) {
+      req.userId = req.user._id;
       next();
     } else {
       res.status(403).json('You are not alowed to do that!');

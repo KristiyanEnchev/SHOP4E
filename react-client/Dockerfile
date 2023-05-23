@@ -4,6 +4,9 @@ FROM node:18-alpine AS build
 # Set the working directory inside the container
 WORKDIR /app
 
+ARG VITE_HOST_URL
+ENV VITE_HOST_URL=${VITE_HOST_URL}
+
 # Copy package.json and package-lock.json (if available) and install dependencies
 COPY package*.json ./
 

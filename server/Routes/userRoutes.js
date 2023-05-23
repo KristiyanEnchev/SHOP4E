@@ -1,6 +1,11 @@
 import express from 'express';
 import { isAdmin, isAuth } from '../Middleware/authMiddleware.js';
 import * as controller from '../Controllers/userController.js';
+import { validateRequest } from '../Middleware/validationMiddleware.js';
+import {
+  registerSchema,
+  updateUserSchema,
+} from '../Validation/userValidation.js';
 
 const userRouter = express.Router();
 
@@ -109,7 +114,13 @@ userRouter.get('/:userId', isAdmin, isAuth, controller.getUser);
  *       403:
  *         description: Not authorized
  */
-userRouter.post('/create', isAdmin, isAuth, controller.createUser);
+userRouter.post(
+  '/create',
+  isAdmin,
+  isAuth,
+  validateRequest(registerSchema),
+  controller.createUser
+);
 
 /**
  * @swagger
@@ -143,7 +154,12 @@ userRouter.post('/create', isAdmin, isAuth, controller.createUser);
  *       404:
  *         description: User not found
  */
-userRouter.put('/:userId', isAuth, controller.updateUser);
+userRouter.put(
+  '/:userId',
+  isAuth,
+  validateRequest(updateUserSchema),
+  controller.updateUser
+);
 
 /**
  * @swagger

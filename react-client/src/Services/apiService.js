@@ -101,6 +101,11 @@ export async function logout() {
   sessionStorage.removeItem('email');
   sessionStorage.removeItem('name');
   sessionStorage.removeItem('isAdmin');
+  sessionStorage.removeItem('userInfo');
+
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('amount');
+  localStorage.removeItem('total');
 
   return result;
 }
