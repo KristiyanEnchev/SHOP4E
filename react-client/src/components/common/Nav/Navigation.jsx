@@ -28,17 +28,6 @@ const NavigationLink = forwardRef(({ to, children, className = '' }, ref) => (
   </Link>
 ));
 
-// eslint-disable-next-line react/display-name
-const DropdownLink = forwardRef(({ to, children }, ref) => (
-  <Link
-    ref={ref}
-    to={to}
-    className="w-full text-gray-700 hover:text-primary hover:bg-gray-100 px-3 py-2 text-sm"
-  >
-    {children}
-  </Link>
-));
-
 const Navigation = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -91,67 +80,117 @@ const Navigation = () => {
             >
               <AiOutlineShopping className="h-6 w-6" />
               {amount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium">
+                <span className="absolute -right-1 -top-1 h-5 w-5 flex items-center justify-center rounded-full bg-red-500 text-xs">
                   {amount}
                 </span>
               )}
             </button>
 
-            {token && (
+            {/* Mobile Menu */}
+            <div className="md:hidden">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="rounded-full"
-                    aria-label="User menu"
+                    className="text-white hover:bg-white/10"
                   >
-                    <Avatar>
-                      <AvatarImage
-                        src={avatar || '/default-avatar.png'}
-                        alt="User avatar"
-                      />
-                      <AvatarFallback>{avatar ? 'User' : '👤'}</AvatarFallback>
-                    </Avatar>
+                    <Menu className="h-6 w-6" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48 bg-white rounded-lg shadow-lg border border-gray-200 flex flex-col py-2">
-                  <DropdownMenuItem asChild>
-                    <DropdownLink to="/profile">Profile</DropdownLink>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 mt-2 bg-white rounded-lg shadow-lg"
+                >
+                  <DropdownMenuItem className="focus:bg-gray-50">
+                    <Link to="/products" className="w-full px-3 py-2">
+                      PRODUCTS
+                    </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <DropdownLink to="/orders">Orders</DropdownLink>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <div onClick={handleLogout}>
-                      <DropdownLink>Logout</DropdownLink>
-                    </div>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
 
-            <div className="md:hidden">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="Mobile menu">
-                    <Menu className="h-6 w-6 text-white" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48 bg-white rounded-lg shadow-lg border border-gray-200">
-                  {!token && (
+                  {token ? (
                     <>
-                      <DropdownMenuItem asChild>
-                        <DropdownLink to="/login">LOGIN</DropdownLink>
+                      <DropdownMenuItem className="focus:bg-gray-50">
+                        <Link to="/profile" className="w-full px-3 py-2">
+                          Profile
+                        </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <DropdownLink to="/register">REGISTER</DropdownLink>
+                      <DropdownMenuItem className="focus:bg-gray-50">
+                        <Link to="/orders" className="w-full px-3 py-2">
+                          Orders
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="focus:bg-gray-50"
+                        onClick={handleLogout}
+                      >
+                        <span className="w-full px-3 py-2">Logout</span>
+                      </DropdownMenuItem>
+                    </>
+                  ) : (
+                    <>
+                      <DropdownMenuItem className="focus:bg-gray-50">
+                        <Link to="/login" className="w-full px-3 py-2">
+                          LOGIN
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="focus:bg-gray-50">
+                        <Link to="/register" className="w-full px-3 py-2">
+                          REGISTER
+                        </Link>
                       </DropdownMenuItem>
                     </>
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
+
+            {/* Desktop Profile Menu */}
+            {token && (
+              <div className="hidden md:block">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="rounded-full"
+                      aria-label="User menu"
+                    >
+                      <Avatar>
+                        <AvatarImage
+                          src={avatar || '/default-avatar.png'}
+                          alt="User avatar"
+                        />
+                        <AvatarFallback>
+                          {avatar ? 'User' : '👤'}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-56 bg-white rounded-lg shadow-lg"
+                  >
+                    <DropdownMenuItem className="focus:bg-gray-50">
+                      <Link to="/profile" className="w-full px-3 py-2">
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="focus:bg-gray-50">
+                      <Link to="/orders" className="w-full px-3 py-2">
+                        Orders
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="focus:bg-gray-50"
+                      onClick={handleLogout}
+                    >
+                      <span className="w-full px-3 py-2">Logout</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            )}
           </div>
         </div>
       </div>
