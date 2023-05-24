@@ -3,7 +3,7 @@ import * as controller from '../Controllers/authController.js';
 import { noCache } from '../Middleware/cacheMiddleware.js';
 import { authLimiter, registerLimiter } from '../Config/rateLimiter.js';
 import { validateRequest } from '../Middleware/validationMiddleware.js';
-import { loginSchema, registerSchema } from '../Validation/userValidation.js';
+import { loginSchema } from '../Validation/userValidation.js';
 
 const authRouter = express.Router();
 
@@ -70,12 +70,7 @@ const authRouter = express.Router();
  *       429:
  *         description: Too many registration attempts
  */
-authRouter.post(
-  '/register',
-  registerLimiter,
-  validateRequest(registerSchema),
-  controller.register
-);
+authRouter.post('/register', registerLimiter, controller.register);
 
 /**
  * @swagger

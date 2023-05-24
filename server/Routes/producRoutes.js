@@ -1,11 +1,7 @@
 import express from 'express';
 import { isAdmin, isAuth } from '../Middleware/authMiddleware.js';
 import * as controller from '../Controllers/productController.js';
-import { validateRequest } from '../Middleware/validationMiddleware.js';
-import {
-  createProductSchema,
-  updateProductSchema,
-} from '../Validation/productValidation.js';
+import { clearCache } from '../Middleware/cacheMiddleware.js';
 
 const productRouter = express.Router();
 
@@ -245,7 +241,6 @@ productRouter.post(
   '/',
   isAuth,
   isAdmin,
-  validateRequest(createProductSchema),
   clearProductCache,
   controller.createProduct
 );
@@ -286,7 +281,6 @@ productRouter.put(
   '/:productId',
   isAuth,
   isAdmin,
-  validateRequest(updateProductSchema),
   clearProductCache,
   controller.editProduct
 );
