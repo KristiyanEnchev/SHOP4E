@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import * as UserService from '../../Services/UserService.js';
-import { getError } from '../../utils.js';
+import { getError } from '../../utils/utils.js';
 
 const initialState = {
   users: [],
@@ -34,11 +34,11 @@ export const usersSlice = createSlice({
     searchByName: (state, action) => {
       return {
         ...state,
-        users: [...state.users].reduce((user) =>
+        users: state.users.filter((user) =>
           user.firstName.toLowerCase().includes(action.payload.toLowerCase())
         ),
       };
-    },
+    }
   },
   extraReducers: {
     [retrieveUsers.pending]: (state) => {
@@ -68,7 +68,7 @@ export const usersSlice = createSlice({
       toast.error(getError(action.error));
     },
 
-    [updateUser.pending]: (state, action) => {
+    [updateUser.pending]: (state) => {
       state.loading = true;
     },
     [updateUser.fulfilled]: (state, action) => {

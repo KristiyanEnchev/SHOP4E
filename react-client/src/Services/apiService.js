@@ -1,5 +1,5 @@
 export const settings = {
-  host: '',
+  host: `${import.meta.env.VITE_HOST_URL}/api`,
 };
 
 export async function request(url, options) {
@@ -18,12 +18,8 @@ export async function request(url, options) {
       throw new Error(error.message);
     }
 
-    try {
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      return response;
-    }
+    const data = await response.json();
+    return data;
   } catch (err) {
     alert(err.message);
     throw err;
@@ -105,6 +101,11 @@ export async function logout() {
   sessionStorage.removeItem('email');
   sessionStorage.removeItem('name');
   sessionStorage.removeItem('isAdmin');
+  sessionStorage.removeItem('userInfo');
+
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('amount');
+  localStorage.removeItem('total');
 
   return result;
 }

@@ -9,6 +9,7 @@ import cartSlice from './Public/cartSlice.js';
 import modalSlice from './Public/modalSlice.js';
 import UsersSlice from './Admin/UsersSlice.js';
 import UserSlice from './Admin/UserSlice.js';
+import OrderSlice from './Public/orderSlice.js';
 
 const reducer = {
   auth: AuthSlice,
@@ -20,6 +21,7 @@ const reducer = {
 
   users: UsersSlice,
   user: UserSlice,
+  orders: OrderSlice,
 };
 
 const store = configureStore(

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import * as UserService from '../../Services/UserService.js';
-import { getError } from '../../utils.js';
+import { getError } from '../../utils/utils.js';
 
 export const findUserById = createAsyncThunk('users/findById', async (id) => {
   const res = await UserService.getUserById(id);

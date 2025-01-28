@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { UserActions } from '../../Admin/components/Helpers/UserListConstants.js';
 
 const initialState = {
-  objectId: '',
-  userAction: UserActions.Close,
   isOpen: false,
+  userAction: null,
+  objectId: null,
 };
 
 const modalSlice = createSlice({
@@ -16,14 +15,13 @@ const modalSlice = createSlice({
       state.userAction = action.payload.action;
       state.objectId = action.payload.objectId;
     },
-    closeModal: (state, action) => {
+    closeModal: (state) => {
       state.isOpen = false;
-      state.action = UserActions.Close;
-      state.objectId = '';
+      state.userAction = null;
+      state.objectId = null;
     },
   },
 });
 
 export const { openModal, closeModal } = modalSlice.actions;
-
 export default modalSlice.reducer;

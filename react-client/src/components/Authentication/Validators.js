@@ -4,7 +4,7 @@ export const emailValidator = (email) => {
   } else if (!new RegExp(/\S+@\S+\.\S+/).test(email)) {
     return 'Incorrect email format';
   }
-  return '';
+  return true;
 };
 
 export const passwordValidator = (password) => {
@@ -13,7 +13,7 @@ export const passwordValidator = (password) => {
   } else if (password.length < 6) {
     return 'Password must have a minimum 8 characters';
   }
-  return '';
+  return true;
 };
 
 export const nameValidator = (name) => {
@@ -42,7 +42,7 @@ export const firstNameValidator = (firstName) => {
   } else if (firstName.length < 3) {
     return 'Incorrect firstName format, must be more than 3';
   }
-  return '';
+  return true;
 };
 
 export const lastNameValidator = (lastName) => {
@@ -51,14 +51,14 @@ export const lastNameValidator = (lastName) => {
   } else if (lastName.length < 3) {
     return 'Incorrect lastName format, must be more than 3';
   }
-  return '';
+  return true;
 };
 
 export const avatarValidator = (avatar) => {
   if (!avatar) {
     return 'avatar is required';
   }
-  return '';
+  return true;
 };
 
 export const productImageValidator = (avatar) => {

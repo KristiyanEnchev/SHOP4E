@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import * as productService from '../../Services/productService.js';
-import { getError } from '../../utils.js';
+import { getError } from '../../utils/utils.js';
 
 const initialState = {
   loading: false,
@@ -65,12 +65,11 @@ const productsSlice = createSlice({
       toast.error(getError(action.error));
     },
 
-    [updateProduct.pending]: (state, action) => {
+    [updateProduct.pending]: (state) => {
       state.loading = true;
     },
     [updateProduct.fulfilled]: (state, action) => {
       state.loading = false;
-      console.log(action.payload);
       const index = state.products.findIndex(
         (product) => product._id === action.payload._id
       );

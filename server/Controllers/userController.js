@@ -1,5 +1,5 @@
 import expressAsyncHandler from 'express-async-handler';
-import User from '../models/userModel.js';
+import User from '../Models/userModel.js';
 import bcrypt from 'bcryptjs';
 
 //GET ALL USERS
@@ -44,11 +44,13 @@ export const updateUser = expressAsyncHandler(async (req, res) => {
 //DELETE USER
 export const deleteUser = expressAsyncHandler(async (req, res) => {
   const user = await User.findById(req.params.userId);
+
   if (user) {
     if (user.email === 'admin@example.com') {
       return res.status(400).send({ message: 'Can Not Delete Admin User' });
     }
-    await user.remove();
+
+    await User.findByIdAndDelete(req.params.userId);
     res.send({ message: 'User Deleted' });
   } else {
     res.status(404).send({ message: 'User Not Found' });

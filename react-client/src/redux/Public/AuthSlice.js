@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import * as userService from '../../Services/UserService.js';
 import toast from 'react-hot-toast';
-import { getError } from '../../utils.js';
+import { getError } from '../../utils/utils.js';
 import * as UploadService from '../../Services/UploadService.js';
 import * as UserService from '../../Services/UserService.js';
 
@@ -29,17 +29,19 @@ const initialState = {
 
 export const userLogin = createAsyncThunk(
   'auth/login',
-  async ({ email, password }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const res = await userService.login(email, password);
       return res;
     } catch (err) {
       toast.error(getError(err));
+      return rejectWithValue(err.message);
     }
   }
 );
 export const logOut = createAsyncThunk('logout', async () => {
   const res = await UserService.logout();
+  toast.success(res.message);
   return res;
 });
 
@@ -108,7 +110,7 @@ const authSlice = createSlice({
       toast.error(getError(action.error));
     },
 
-    [updateUser.pending]: (state, action) => {
+    [updateUser.pending]: (state) => {
       state.loading = true;
     },
     [updateUser.fulfilled]: (state, action) => {
@@ -117,14 +119,6 @@ const authSlice = createSlice({
       state.avatar = profile.avatar;
       state.email = email;
       state.name = name;
-      // state.name = action.payload.name;
-      // state.email = action.payload.email;
-      // state.avatar = action.payload.profile.avatar;
-      // // state.avatar = initialState.avatar;
-      // state.isAdmin = action.payload.isAdmin;
-      // state.token = initialState.token;
-      // state._id = action.payload._id;
-
       toast.success('Successful updated user');
     },
     [updateUser.rejected]: (state, action) => {
@@ -136,7 +130,7 @@ const authSlice = createSlice({
     [logOut.pending]: (state) => {
       state.loading = true;
     },
-    [logOut.fulfilled]: (state, action) => {
+    [logOut.fulfilled]: (state) => {
       state.loading = false;
       state._id = null;
       state.email = null;
@@ -144,7 +138,6 @@ const authSlice = createSlice({
       state.token = null;
       state.name = null;
       state.isAdmin = false;
-      toast.success(action.payload.message);
     },
     [logOut.rejected]: (state, action) => {
       state.loading = false;

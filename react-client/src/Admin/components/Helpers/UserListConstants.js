@@ -3,7 +3,7 @@ export const UserActions = {
   Edit: 'edit',
   Delete: 'delete',
   Create: 'create',
-  Close: 'close',
+  Close: 'CLOSE',
   GetAll: 'getAll',
-  OpenCart: 'openCart',
+  OpenCart: 'OPEN_CART',
 };
